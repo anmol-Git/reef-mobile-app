@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reef_mobile_app/components/modals/token_selection_modals.dart';
@@ -267,35 +268,42 @@ class _SwapPageState extends State<SwapPage> {
                                   children: [
                                     if (selectedTopToken == null)
                                       Text("Select token")
-                                    /*  TODO fix svg image base64
-                                         else if (selectedTopToken!.iconUrl !=
+                                    else if (selectedTopToken!.iconUrl !=
                                             null &&
                                         selectedTopToken!.iconUrl!.isNotEmpty)
-                                      CachedNetworkImage(
-                                        imageUrl: selectedTopToken!.iconUrl!,
-                                        width: 24,
-                                        height: 24,
-                                        placeholder: (context, url) =>
-                                            Shimmer.fromColors(
-                                          baseColor: Colors.grey[300]!,
-                                          highlightColor: Colors.grey[350]!,
-                                          child: Container(
-                                            width: 24,
-                                            height: 24,
-                                            decoration: ShapeDecoration(
-                                              color: Colors.grey[350]!,
-                                              shape: const CircleBorder(),
+                                      if (selectedTopToken!.iconUrl!.startsWith(
+                                          "data:image/svg+xml;base64,"))
+                                        SvgPicture.string(
+                                          decodeSvg(selectedTopToken!.iconUrl!),
+                                          height: 24,
+                                          width: 24,
+                                        )
+                                      else
+                                        CachedNetworkImage(
+                                          imageUrl: selectedTopToken!.iconUrl!,
+                                          width: 24,
+                                          height: 24,
+                                          placeholder: (context, url) =>
+                                              Shimmer.fromColors(
+                                            baseColor: Colors.grey[300]!,
+                                            highlightColor: Colors.grey[350]!,
+                                            child: Container(
+                                              width: 24,
+                                              height: 24,
+                                              decoration: ShapeDecoration(
+                                                color: Colors.grey[350]!,
+                                                shape: const CircleBorder(),
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        errorWidget: (context, url, error) =>
-                                            const Icon(
-                                          CupertinoIcons
-                                              .exclamationmark_circle_fill,
-                                          color: Colors.black12,
-                                          size: 24,
-                                        ),
-                                      )*/
+                                          errorWidget: (context, url, error) =>
+                                              const Icon(
+                                            CupertinoIcons
+                                                .exclamationmark_circle_fill,
+                                            color: Colors.black12,
+                                            size: 24,
+                                          ),
+                                        )
                                     else
                                       Icon(CupertinoIcons.question_circle,
                                           color: Colors.grey[600]!, size: 24),

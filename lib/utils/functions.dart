@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 double getBalanceValue(double balance, price) {
   if (price == null || price == null) {
     return 0.0;
@@ -67,4 +69,32 @@ bool isSubstrateAddress(String address) {
     return false;
   }
   return RegExp(r'^[A-z\d]{48}$').hasMatch(address);
+}
+
+// If url is base64 encoded, returns decoded value
+// String processImageUrl(String value) {
+//   if (!value.startsWith("data:image/svg+xml;base64,")) {
+//     return value;
+//   }
+//   value = value.substring(26);
+//   Codec<String, String> stringToBase64 = utf8.fuse(base64);
+//   String base64Decoded = stringToBase64.decode(value);
+//   String uriEncoded = Uri.encodeComponent(base64Decoded);
+//   return "data:image/svg+xml,$uriEncoded";
+// }
+
+String decodeSvg(String value) {
+  value = value.substring(26);
+  Codec<String, String> stringToBase64 = utf8.fuse(base64);
+  String base64Decoded = stringToBase64.decode(value);
+  if (base64Decoded.contains("<defs")) {
+    // Defs are required to be at the beginning of the SVG
+    String defs = base64Decoded.substring(
+        base64Decoded.indexOf("<defs"), base64Decoded.indexOf("</defs>") + 7);
+    base64Decoded = base64Decoded.replaceAll(defs, "");
+    base64Decoded = base64Decoded.substring(0, base64Decoded.indexOf(">") + 1) +
+        defs +
+        base64Decoded.substring(base64Decoded.indexOf(">") + 1);
+  }
+  return base64Decoded;
 }
