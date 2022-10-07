@@ -157,7 +157,7 @@ class _AccountCreationContentState extends State<AccountCreationContent> {
                                     style: TextStyle(color: Colors.grey[600]!),
                                     overflow: TextOverflow.fade,
                                     maxLines: 1,
-                                    softWrap: false
+                                    softWrap: false,
                                   ),
                                 ),
                                 const Gap(2),
@@ -413,57 +413,66 @@ class _AccountCreationConfirmContentState
               child: Padding(
                 padding: const EdgeInsets.symmetric(
                     vertical: 24.0, horizontal: 16.0),
-                child: Row(
-                  children: [
-                    Container(
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.black12,
-                      ),
-                      child: ClipRRect(
-                          borderRadius: BorderRadius.circular(64),
-                          child: (widget.account?.svg != null)
-                              ? SvgPicture.string(widget.account?.svg as String)
-                              : Container(
-                                  width: 64,
-                                  height: 64,
-                                  decoration:
-                                      BoxDecoration(color: Colors.grey[600]!),
-                                )),
-                    ),
-                    const Gap(12),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          name,
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                          ),
+                child: ClipRect(
+                  child: Row(
+                    children: [
+                      Container(
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.black12,
                         ),
-                        const Gap(2),
-                        Row(
+                        child: ClipRRect(
+                            borderRadius: BorderRadius.circular(64),
+                            child: (widget.account?.svg != null)
+                                ? SvgPicture.string(widget.account?.svg as String)
+                                : Container(
+                                    width: 64,
+                                    height: 64,
+                                    decoration:
+                                        BoxDecoration(color: Colors.grey[600]!),
+                                  )),
+                      ),
+                      const Gap(12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Address: ${widget.account?.address.shorten() ?? "Loading..."}",
-                              style: TextStyle(color: Colors.grey[600]!),
+                              name,
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                             const Gap(2),
-                            IconButton(
-                              constraints: BoxConstraints(),
-                              padding: EdgeInsets.zero,
-                              icon: Icon(Icons.copy, size: 12),
-                              onPressed: () {
-                                Clipboard.setData(ClipboardData(
-                                    text: widget.account?.address));
-                              },
-                            )
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                      "Address: ${widget.account?.address.shorten() ?? "Loading..."}",
+                                      style: TextStyle(color: Colors.grey[600]!),
+                                      overflow: TextOverflow.fade,
+                                      maxLines: 1,
+                                      softWrap: false
+                                  ),
+                                ),
+                                const Gap(2),
+                                IconButton(
+                                  constraints: BoxConstraints(),
+                                  padding: EdgeInsets.zero,
+                                  icon: Icon(Icons.copy, size: 12),
+                                  onPressed: () {
+                                    Clipboard.setData(ClipboardData(
+                                        text: widget.account?.address));
+                                  },
+                                )
+                              ],
+                            ),
                           ],
                         ),
-                      ],
-                    ),
-                  ],
+                      ),
+                    ],
+                  ),
                 ),
               )),
           const Gap(12),
@@ -565,7 +574,6 @@ class _AccountCreationConfirmContentState
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
             ),
-            width: double.infinity,
             child: Row(
               children: [
                 TextButton(
@@ -574,15 +582,17 @@ class _AccountCreationConfirmContentState
                     },
                     style: TextButton.styleFrom(
                       backgroundColor: Colors.black12,
-                      minimumSize: const Size(48, 48),
+                      minimumSize: const Size(24, 24),
                       padding: EdgeInsets.zero,
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     ),
+
                     child: Icon(
                       Icons.arrow_back,
                       color: Styles.textColor,
-                      size: 20,
+                      size: 10,
                     )),
-                const Gap(4),
+                const Gap(8),
                 Expanded(
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
@@ -596,7 +606,7 @@ class _AccountCreationConfirmContentState
                       primary: (name.isNotEmpty && password.isNotEmpty)
                           ? Styles.secondaryAccentColor
                           : const Color(0xff9d6cff),
-                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
                     ),
                     onPressed: () {
                       if (name.isNotEmpty && password.isNotEmpty) {
@@ -614,7 +624,7 @@ class _AccountCreationConfirmContentState
                       'Add the account with generated seed',
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                        fontSize: 14,
+                        fontSize: 12,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
