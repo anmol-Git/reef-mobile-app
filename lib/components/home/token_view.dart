@@ -125,12 +125,16 @@ class _TokenViewState extends State<TokenView> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(name,
-                            style: GoogleFonts.poppins(
-                              color: Styles.textColor,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w700,
-                            )),
+                        Container(
+                          constraints: BoxConstraints(maxWidth: 100),
+                          child: Text(name,
+                              overflow: TextOverflow.ellipsis,
+                              style: GoogleFonts.poppins(
+                                color: Styles.textColor,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w700,
+                              )),
+                        ),
                         Text(
                           // TODO allow conversionRate to be null for no data
                           "\$${price != 0 ? price.toStringAsFixed(4) : 'No pool data'}",
@@ -250,8 +254,7 @@ class _TokenViewState extends State<TokenView> {
             //   ),
             // ),
             child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 32, horizontal: 32.0),
+              padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 0),
               child: Observer(builder: (_) {
                 return Wrap(
                   spacing: 24,
@@ -265,6 +268,7 @@ class _TokenViewState extends State<TokenView> {
                             iconURL: tkn.iconUrl,
                             price: tkn.price?.toDouble() ?? 0,
                             balance: decimalsToDouble(tkn.balance)),
+                        SizedBox(height: 12),
                       ],
                     );
                   }).toList(),

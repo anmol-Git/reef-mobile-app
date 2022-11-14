@@ -238,12 +238,12 @@ class _HomePageState extends State<HomePage> {
           ),
           onNotification: (t) {
             if (t is ScrollUpdateNotification) {
-              if (t.metrics.pixels! > 120 && t.scrollDelta! > 0) {
+              if (t.metrics.pixels! > 196 && t.scrollDelta! > 0) {
                 setState(() {
                   _textSize = 0.0;
                 });
               }
-              if (t.metrics.pixels! < 120 && t.scrollDelta! < 0) {
+              if (t.metrics.pixels! < 196 && t.scrollDelta! < 0) {
                 setState(() {
                   _textSize = 84.0;
                 });

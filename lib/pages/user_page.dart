@@ -7,13 +7,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:reef_mobile_app/components/accounts/accounts_list.dart';
 import 'package:reef_mobile_app/components/modals/account_modals.dart';
 import 'package:reef_mobile_app/components/modals/add_account_modal.dart';
-import 'package:reef_mobile_app/components/modals/auth_url_list_modal.dart';
-import 'package:reef_mobile_app/components/switch_network.dart';
 import 'package:reef_mobile_app/model/ReefAppState.dart';
-import 'package:reef_mobile_app/model/StorageKey.dart';
 import 'package:reef_mobile_app/model/account/AccountCtrl.dart';
-import 'package:reef_mobile_app/model/metadata/metadata.dart';
-import 'package:reef_mobile_app/components/modals/metadata_aproval_modal.dart';
 import 'package:reef_mobile_app/utils/styles.dart';
 
 import '../components/SignatureContentToggle.dart';
@@ -70,13 +65,15 @@ class _UserPageState extends State<UserPage> {
               Row(
                 children: [
                   MaterialButton(
-                    onPressed: () => showAddAccountModal('Add account menu', openModal,
+                    onPressed: () => showAddAccountModal(
+                        'Add account menu', openModal,
                         context: context),
                     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     minWidth: 0,
                     height: 36,
                     elevation: 0,
-                    padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                         side: const BorderSide(color: Colors.black26)),
@@ -115,8 +112,7 @@ class _UserPageState extends State<UserPage> {
                 child: AccountsList(
                     ReefAppState.instance.model.accounts.signers,
                     ReefAppState.instance.model.accounts.selectedAddress,
-                    ReefAppState.instance.accountCtrl.setSelectedAddress)
-            );
+                    ReefAppState.instance.accountCtrl.setSelectedAddress));
           }
           return const Text('No accounts present');
         }),
