@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +13,7 @@ import 'package:reef_mobile_app/model/ReefAppState.dart';
 import 'package:reef_mobile_app/model/account/AccountCtrl.dart';
 import 'package:reef_mobile_app/model/feedback-data-model/FeedbackDataModel.dart';
 import 'package:reef_mobile_app/utils/styles.dart';
+import 'package:collection/collection.dart';
 
 import '../components/SignatureContentToggle.dart';
 
@@ -59,16 +62,24 @@ class _AccountsPageState extends State<AccountsPage> {
         Observer(builder: (_) {
           var accsFeedbackDataModel =
               ReefAppState.instance.model.accounts.accountsFDM;
-          if (ReefAppState.instance.model.accounts.accountsFDM.data.length ==
-              0) {
+          if (ReefAppState.instance.model.accounts.accountsFDM.data.isEmpty) {
             return SizedBox.shrink();
           }
-          // return Text('len=${accsFeedbackDataModel.data.length}');
-          return Flexible(child: AccountsList(
-              ReefAppState.instance.model.accounts.accountsFDM.data,
-              ReefAppState.instance.model.accounts.selectedAddress,
-              ReefAppState.instance.accountCtrl.setSelectedAddress)
-          );
+          var selectedAddress =
+              ReefAppState.instance.model.accounts.selectedAddress;
+          var selectedAccount = null;
+          if (selectedAddress != null) {
+            selectedAccount = ReefAppState
+                .instance.model.accounts.accountsFDM.data
+                .firstWhereOrNull((acc) => acc.data.address == selectedAddress);
+          }
+          var notSelectedAccounts = accsFeedbackDataModel.data.where((element) => element.data.address!=selectedAddress).toList(growable: false);
+          print('notSelectedAccounts must be different List instance so diff LEN ${accsFeedbackDataModel.data.length} filtered=${notSelectedAccounts.length}');
+
+          //...TODO render selectedAccount if !=null on top
+          return Flexible(
+              child: AccountsList(notSelectedAccounts, selectedAddress,
+                  ReefAppState.instance.accountCtrl.setSelectedAddress));
         }),
       ],
     ));
@@ -76,63 +87,63 @@ class _AccountsPageState extends State<AccountsPage> {
 
   Padding buildHeader(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              children: [
-                // const Image(
-                //   image: AssetImage("./assets/images/reef.png"),
-                //   width: 24,
-                //   height: 24,
-                // ),
-                const Gap(8),
-                Text(
-                  "Accounts",
-                  style: GoogleFonts.spaceGrotesk(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 32,
-                      color: Colors.grey[800]),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                MaterialButton(
-                  onPressed: () => showAddAccountModal(
-                      'Add account menu', openModal,
-                      context: context),
-                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  minWidth: 0,
-                  height: 36,
-                  elevation: 0,
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      side: const BorderSide(color: Colors.black26)),
-                  child: Row(children: [
-                    Icon(
-                      Icons.add_circle_rounded,
-                      color: Styles.textLightColor,
-                      size: 22,
-                    ),
-                    const Gap(4),
-                    Text(
-                      "Add Account",
-                      style: GoogleFonts.roboto(
-                          color: Styles.textLightColor,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500),
-                    )
-                  ]),
-                ),
-                const Gap(8)
-              ],
-            ),
-          ],
-        ),
-      );
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            children: [
+              // const Image(
+              //   image: AssetImage("./assets/images/reef.png"),
+              //   width: 24,
+              //   height: 24,
+              // ),
+              const Gap(8),
+              Text(
+                "Accounts",
+                style: GoogleFonts.spaceGrotesk(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 32,
+                    color: Colors.grey[800]),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              MaterialButton(
+                onPressed: () => showAddAccountModal(
+                    'Add account menu', openModal,
+                    context: context),
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                minWidth: 0,
+                height: 36,
+                elevation: 0,
+                padding:
+                    const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    side: const BorderSide(color: Colors.black26)),
+                child: Row(children: [
+                  Icon(
+                    Icons.add_circle_rounded,
+                    color: Styles.textLightColor,
+                    size: 22,
+                  ),
+                  const Gap(4),
+                  Text(
+                    "Add Account",
+                    style: GoogleFonts.roboto(
+                        color: Styles.textLightColor,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500),
+                  )
+                ]),
+              ),
+              const Gap(8)
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }
