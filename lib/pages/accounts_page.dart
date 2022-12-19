@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -73,8 +71,11 @@ class _AccountsPageState extends State<AccountsPage> {
                 .instance.model.accounts.accountsFDM.data
                 .firstWhereOrNull((acc) => acc.data.address == selectedAddress);
           }
-          var notSelectedAccounts = accsFeedbackDataModel.data.where((element) => element.data.address!=selectedAddress).toList(growable: false);
-          print('notSelectedAccounts must be different List instance so diff LEN ${accsFeedbackDataModel.data.length} filtered=${notSelectedAccounts.length}');
+          var notSelectedAccounts = accsFeedbackDataModel.data
+              .where((element) => element.data.address != selectedAddress)
+              .toList(growable: false);
+          print(
+              'notSelectedAccounts must be different List instance so diff LEN ${accsFeedbackDataModel.data.length} filtered=${notSelectedAccounts.length}');
 
           //...TODO render selectedAccount if !=null on top
           return Flexible(

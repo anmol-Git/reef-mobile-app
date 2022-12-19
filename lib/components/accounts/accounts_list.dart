@@ -8,7 +8,7 @@ import '../../utils/styles.dart';
 import '../account_box.dart';
 import '../modals/account_modals.dart';
 
-class AccountsList extends StatelessWidget {
+class AccountsList extends StatefulWidget {
   final List<FeedbackDataModel<ReefAccount>> accounts;
   final void Function(String) selectAddress;
   final String? selectedAddress;
@@ -17,13 +17,36 @@ class AccountsList extends StatelessWidget {
       : super(key: key);
 
   @override
+  State<AccountsList> createState() => _AccountsListState();
+}
+
+class _AccountsListState extends State<AccountsList> {
+  @override
+  void initState() {
+    super.initState();
+    setSelectedAddressInStart();
+  }
+
+  void setSelectedAddressInStart() {
+    for (int i = 0; i < widget.accounts.length; i++) {
+      FeedbackDataModel<ReefAccount> curr = widget.accounts[i];
+      String currentAddress = curr.data.address;
+      if (currentAddress.compareTo(widget.selectAddress.toString()) == 0) {
+        widget.accounts.removeAt(i);
+        widget.accounts.insert(0, curr);
+      }
+    }
+    setState(() {});
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ListView(
       physics: const BouncingScrollPhysics(),
       padding: const EdgeInsets.all(0),
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
-      children: accounts.isEmpty
+      children: widget.accounts.isEmpty
           ? [
               DottedBorder(
                 dashPattern: const [4, 2],
@@ -72,7 +95,7 @@ class AccountsList extends StatelessWidget {
                 ),
               )
             ]
-          : [toAccountBoxList(accounts)],
+          : [toAccountBoxList(widget.accounts)],
     );
   }
 
@@ -87,10 +110,13 @@ class AccountsList extends StatelessWidget {
                 children: [
                   AccountBox(
                       reefAccountFDM: acc,
-                      selected: selectedAddress != null
-                          ? selectedAddress == acc.data.address
+                      selected: widget.selectedAddress != null
+                          ? widget.selectedAddress == acc.data.address
                           : false,
-                      onSelected: () => selectAddress(acc.data.address),
+                      onSelected: () => {
+                            widget.selectAddress(acc.data.address),
+                            setSelectedAddressInStart(),
+                          },
                       showOptions: true),
                   const Gap(12)
                 ],
